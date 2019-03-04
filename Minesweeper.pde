@@ -7,6 +7,8 @@ import de.bezier.guido.*;
 //Declare and initialize NUM_ROWS and NUM_COLS = 20
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs; //ArrayList of just the minesweeper buttons that are mined
+private boolean mouseKill = true; //destroys ability to click after w/l
+//create logic that the ones that are marked without bombs cant trigger w
 
 void setup ()
 {
@@ -35,7 +37,7 @@ public void setBombs()
   int c = (int)(Math.random() * NUM_COLS);
   if (!(bombs.contains(buttons[r][c]))) {
     bombs.add(buttons[r][c]); 
-    println(r + "," + c);
+    //println(r + "," + c);
   }
 }
 
@@ -44,15 +46,16 @@ public void draw ()
   background( 0 );
   if (isWon()) {
     displayWinningMessage();
+    mouseKill = false;
   }
-  for (int row = 0; row < buttons.length; row++) {
+ /* for (int row = 0; row < buttons.length; row++) {
     for (int col = 0; col < buttons[row].length; col++) {
       if (bombs.contains(buttons[row][col]) && buttons[row][col].isClicked() == true) {
         displayLosingMessage();
-        
+        garbagee
       }
     }
-  }
+  }*/
         
 }
 public boolean isWon()
@@ -80,9 +83,11 @@ public void displayLosingMessage()
       if(bombs.contains(buttons[i][y]) && buttons[i][y].isClicked()== false) {
         buttons[i][y].mousePressed();
       buttons[i][y].setLabel("L");
+      
     }
   }
   }
+  mouseKill = false;
 }
 public void displayWinningMessage()
 {
@@ -126,6 +131,7 @@ public class MSButton
 
   public void mousePressed () 
   {
+   if(mouseKill) { 
     clicked = true;
     if (mouseButton == RIGHT) {
       marked = !marked;
@@ -163,6 +169,7 @@ public class MSButton
         buttons[r][c+1].mousePressed();
       }
     }
+   }
   }
 
   public void draw () 
