@@ -1,7 +1,7 @@
 
 private int NUM_ROWS = 20; 
 private int NUM_COLS = 20;
-//private int NUM_BOMBS = 8
+private int NUM_BOMBS = 10;
 
 import de.bezier.guido.*;
 //Declare and initialize NUM_ROWS and NUM_COLS = 20
@@ -24,7 +24,10 @@ void setup ()
   bombs = new ArrayList<MSButton>();
 
 
-  setBombs();
+  for (int i = 0; i <= NUM_BOMBS; i++)
+  { 
+    setBombs();
+  }
 }
 public void setBombs()
 {
@@ -39,27 +42,57 @@ public void setBombs()
 public void draw ()
 {
   background( 0 );
-  if (isWon())
+  if (isWon()) {
     displayWinningMessage();
-}
-public boolean isWon()
-{
+  }
   for (int row = 0; row < buttons.length; row++) {
     for (int col = 0; col < buttons[row].length; col++) {
-      if (bombs.contains(buttons[row][col]) && buttons[row][col].isMarked() == true) {
-        return true;
+      if (bombs.contains(buttons[row][col]) && buttons[row][col].isClicked() == true) {
+        displayLosingMessage();
+        
       }
     }
   }
+        
+}
+public boolean isWon()
+{
+  int dude = bombs.size();
+  int hi = 0;
+  for (int row = 0; row < buttons.length; row++) {
+    for (int col = 0; col < buttons[row].length; col++) {
+      if (bombs.contains(buttons[row][col]) && buttons[row][col].isMarked() == true) {
+        hi++;
+      }
+      if (hi == dude) {
+        return true;
+    }
+    }
+  }
   return false;
+
+  
 }
 public void displayLosingMessage()
 {
-  //your code here
+  for (int i = 0; i < buttons.length; i++) {
+    for (int y = 0; y < buttons[i].length; y++) {
+      if(bombs.contains(buttons[i][y]) && buttons[i][y].isClicked()== false) {
+        buttons[i][y].mousePressed();
+      buttons[i][y].setLabel("L");
+    }
+  }
+  }
 }
 public void displayWinningMessage()
 {
-  //your code here
+
+  for (int i = 0; i < buttons.length; i++) {
+    for (int y = 0; y < buttons[i].length; y++) {
+
+      buttons[i][y].setLabel("WIN");
+    }
+  }
 }
 
 public class MSButton
